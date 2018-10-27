@@ -1,0 +1,159 @@
+
+
+/* Prevent scroll on narrow devices */
+html, body {
+  overflow-x: hidden;
+}
+
+
+/* Set up font */
+html {
+/* lanyon style */
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+/* hyde style */
+/*  font-family: "PT Sans", Helvetica, Arial, sans-serif;*/
+}
+
+/* Font style of headings, from lanyon */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-weight: 900; /* I want bolder font, original 400 */
+  color: #313131;
+  letter-spacing: -.025rem;
+}
+
+
+/*
+ * Container
+ *
+ * Center the page content.
+ */
+
+
+@media (min-width: 48em) {
+  .container {
+    max-width: 38rem;
+    margin-left: 20rem;
+    margin-right: 2rem;
+  }
+}
+
+@media (min-width: 64em) {
+  .container {
+    margin-left: 22rem;
+    margin-right: 4rem;
+  }
+}
+
+/*
+ * Masthead
+ *
+ * Super small header above the content for site name and short description.
+ */
+
+.masthead {
+  padding-top:    1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #eee;
+}
+.masthead-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #505050;
+}
+.masthead-title a {
+  color: #505050;
+}
+.masthead-title small {
+  font-size: 75%;
+  font-weight: 800;
+  color: #c0c0c0;
+  letter-spacing: 0;
+}
+
+@media (max-width: 48em) {
+  .masthead-title {
+    text-align: center;
+  }
+  .masthead-title small {
+    display: none;
+  }
+}
+
+
+.sidebar {
+    text-align: center;
+    font-family: "PT Sans", Helvetica, Arial, sans-serif;
+    font-size: .875rem;
+    color: rgba(255, 255, 255, .6);
+    background-color: #202020;
+    }
+
+@media (min-width: 48em) {
+    .sidebar {
+        text-align: left;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 14rem;    
+    }
+}
+
+
+/* Sidebar content */
+.sidebar a {
+  font-weight: normal;
+  color: #fff;
+}
+.sidebar-item {
+  padding: 1rem;
+}
+.sidebar-item p:last-child {
+  margin-bottom: 0;
+}
+
+/* Sidebar nav */
+.sidebar-nav {
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.sidebar-nav-item {
+  display: block;
+  padding: .5rem 1rem;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.sidebar-nav-item.active,
+a.sidebar-nav-item:hover,
+a.sidebar-nav-item:focus {
+  text-decoration: none;
+  background-color: rgba(255,255,255,.1);
+  border-color: transparent;
+}
+
+@media (min-width: 48em) {
+  .sidebar-item {
+    padding: 1.5rem;
+  }
+  .sidebar-nav-item {
+    padding-left:  1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+
+.page {
+  margin-bottom: 4em;
+}
+
+/* Blog post or page title */
+.page-title,
+.post-title,
+.post-title a {
+  color: #303030;
+}
+.page-title,
+.post-title {
+  margin-top: 0;
+}
+
