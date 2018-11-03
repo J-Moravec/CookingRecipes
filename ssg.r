@@ -107,6 +107,7 @@ render_md_page = function(file, template, data){
     content = render_md(file)
     data[["page_title"]] = metadata[["title"]]
     data[["content"]] = content
+    data[["page_name"]] = tools::file_path_sans_ext(file)
     render_page(template, data)
     }
 
@@ -243,13 +244,14 @@ make_site = function(data){
 
     head = get_head(data)
     sidebar = get_sidebar(data)
-    template = get_template("page.html")
+    page_template = get_template("page.html")
+    recipe_template = get_template("recipe.html")
 
     data[["head"]] = head
     data[["sidebar"]] = sidebar
 
-    render_home_page(template, data)
-    render_pages(template, data)
+    render_home_page(page_template, data)
+    render_pages(recipe_template, data)
     }
 
 

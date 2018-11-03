@@ -24,6 +24,10 @@ h1, h2, h3, h4, h5, h6 {
  * Center the page content.
  */
 
+.content {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    }
 
 @media (min-width: 48em) {
   .content {

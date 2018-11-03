@@ -34,7 +34,7 @@
     <div class="sidebar-item">
     <div class="sidebar-title">
         <h1>
-            <a href="/"> CookingRecipes </a>
+            <a href="/CookingRecipes/"> CookingRecipes </a>
         </h1>
     </div>
         <p>Not just Czech home-cooking!</p>
@@ -44,36 +44,10 @@
         <a class="sidebar-nav-item" href="/CookingRecipes/">Home</a>
         <a class="sidebar-nav-item" href="/CookingRecipes/#Baking">Baking</a>
 <a class="sidebar-nav-item" href="/CookingRecipes/#Cooking">Cooking</a>
-
-<!--    <a class="sidebar-nav-item{% if page_url == site_baseurl %} active{% endif %}" href="/CookingRecipes/">Home</a>-->
-
-<!--    {% comment %}-->
-<!--      The code below dynamically generates a sidebar nav of pages with-->
-<!--      `layout: page` in the front-matter. See readme for usage.-->
-<!--    {% endcomment %}-->
-
-<!--    {% assign pages_list = site.pages | sort:"url" %}-->
-<!--    {% for node in pages_list %}-->
-<!--      {% if node.title != null %}-->
-<!--        {% if node.layout == "page" %}-->
-<!--          <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href=""></a>-->
-<!--        {% endif %}-->
-<!--      {% endif %}-->
-<!--    {% endfor %}-->
-<!--    <a class="sidebar-nav-item" href="/archive/v.zip">Download</a>-->
-<!--    <a class="sidebar-nav-item" href="">GitHub project</a>-->
-<!--    <span class="sidebar-nav-item">Currently v</span>-->
     </nav>
 
-<!--    <div class="sidebar-item">-->
-<!--        <p>-->
-<!--        &copy; . All rights reserved.-->
-<!--    </p>-->
-<!--  </div>-->
 </div>
 
-        <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-             content to avoid any CSS collisions with our real content. -->
         <div class="wrap">
             <div class="content">
                 <div class="page">
@@ -136,6 +110,21 @@
             </div>
         </div>
 
-        <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+        <div class="content" id="disqus_thread"></div>
+        <script>        
+        var disqus_config = function () {
+        /*this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable*/
+        this.page.identifier = _recipes/poppy_seed_cake; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://czechcookingrecipes.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </body>
 </html>
