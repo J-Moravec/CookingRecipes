@@ -1,6 +1,7 @@
 ---
 title: Poppy seed cake with lemon-sugar icing
 type: baking
+date: 2019-8-04
 ---
 
 Czech cuisine is one of those that use a lot of poppy seeds in pastries. In fact, poppy seed filling is one of three main fillings, the other two are made of quark and from povidla (kind of jam made by boiling very ripe plums). And since I love both poppy seeds and quark, obtaining both ingredients was one of my first targets in New Zealand. Fortunately, I could buy a bag of poppy seeds in imported goods store. So I could sustain my needs.

@@ -1,6 +1,7 @@
 ---
 title: Cinnamon rolls
 type: baking
+date: 2019-8-08
 ---
 
 ![](../assets/cinnamon_rolls.jpg "Cinnamon rolls")

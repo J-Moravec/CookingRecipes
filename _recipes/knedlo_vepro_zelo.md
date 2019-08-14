@@ -1,6 +1,7 @@
 ---
 title: Vepřo knedlo zelo (Pork dumpling cabbage)
 type: cooking
+date: 2019-8-03
 ---
 
 Vepřo knedlo zelo is Moravian (part of Czechia) national dish. It consists of "sweet" cooked cabbage (as the opposite of sour made from sauerkraut), bread dumpling and a larger cut of pork meat. There are number of variants, such as using sauerkraut instead of fresh cabbage, using various cuts of pork, such as pork belly (called bůček, get the one that has still a lot of meat on it), diced fatty pork called výpečky or with duck and red cabbage (which has milder, sweeter taste). You can also use potato dumpling instead of bread dumpling, but believe it or not, I think that potato dumpling is much more finicky to make and I kind of like bread dumpling more.

@@ -1,6 +1,7 @@
 ---
 title: Quark cake
 type: baking
+date: 2019-8-06
 ---
 
 ![](../assets/quark_cake.jpg "Half-eaten quark cake. It just so good!")

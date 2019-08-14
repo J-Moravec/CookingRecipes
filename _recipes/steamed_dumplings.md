@@ -1,6 +1,7 @@
 ---
 title: Steamed dumplings, savoury or sweet!
 type: cooking
+date: 2019-8-02
 ---
 
 ![](../assets/steamed_duplings.jpg "5 savoury duplings, Vietnamese style!")

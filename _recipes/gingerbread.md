@@ -1,6 +1,7 @@
 ---
 title: Gingerbread with homemade spices
 type: baking
+date: 2019-8-05
 ---
 
 ![](../assets/gingerbread.jpg "Zdobené perníčky")

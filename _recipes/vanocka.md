@@ -1,6 +1,7 @@
 ---
 title: Vánočka
 type: baking
+date: 2019-8-07
 ---
 
 ![](../assets/mini_vanockas.jpg "Smaller vánočkas prepared for baking.")

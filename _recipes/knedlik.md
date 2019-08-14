@@ -1,6 +1,7 @@
 ---
 title: Bread dumpling
 type: cooking
+date: 2019-8-01
 ---
 
 ![](../assets/dumpling.jpg "Knedlík")
