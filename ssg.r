@@ -130,12 +130,11 @@ get_metadata = function(data){
     pages_path = file.path(pages_inputdir, pages)
     pages_name = tools::file_path_sans_ext(pages)
     metadata = lapply(pages_path, rmarkdown::yaml_front_matter)
-    metadata = do.call(rbind, metadata)
-    mode(metadata) = "character"
+    metadata = transpose(metadata)
     metadata = as.data.frame(metadata, stringsAsFactors=FALSE)
     metadata["path"] = pages_path
     metadata["name"] = pages_name
-    metadata["time"] = as.Date(file.mtime(pages_path))
+    metadata["date"] = fix_missing_date(metadata["date"], pages_path)
     metadata["link"] = file.path(
         site_baseurl,
         pages_outputdir,
@@ -143,6 +142,30 @@ get_metadata = function(data){
         )
     metadata
     }    
+
+# tranpose list of lists according to found elements, but preserve unknown data:
+transpose = function(list){
+    columns = unlist(list) %>% names %>% unique
+    transposed = lapply(columns, get_column, list)
+    names(transposed) = columns
+    transposed
+    }
+
+
+get_column = function(column, list){
+    vec = lapply(list, getElement, name=column)
+    vec[unlist(lapply(vec, is.null))] = NA
+    unlist(vec)
+    }
+
+
+fix_missing_date = function(dates, pages_path){
+    dates = dates[[1]]
+    missing = is.na(dates)
+    dates = as.Date(dates)
+    dates[missing] = as.Date(file.mtime(pages_path[missing]))
+    list(dates)
+    }
 
 
 # make links from metadata
@@ -167,7 +190,7 @@ home_page = function(data){
     latest_pages = data[["latest_pages"]] %>% as.numeric
     if(latest_pages > 0){
         latest_metadata = metadata[
-            metadata[["time"]] %>% order(., decreasing=TRUE),
+            metadata[["date"]] %>% order(., decreasing=TRUE),
             ]
         latest_pages = min(latest_pages, nrow(latest_metadata))
         latest_metadata = latest_metadata[1:latest_pages, ]
