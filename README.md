@@ -5,6 +5,8 @@ The `ssg.r` is a simple static site generator to produce my CookingRecipes websi
 
 The `ssg.r` do all the basic things, like translating `.md` into `.html`, reading metadata, reading `config.yml` and so on.
 
+The live page with recipes is available [here](https://j-moravec.github.io/CookingRecipes/)
+
 ### Basic usage
 
 To build site locally, type:
