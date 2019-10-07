@@ -13,17 +13,17 @@ But enough history. Bábovka is a cake that is traditionally eaten with tea or c
 This recipe uses quark, I have raved about quark before, so I will not do it again. Quark gives the cake very nice flavour and texture. You can use yogurt, buttermilk, kefir, or milk, but you might have to add a bit flour or reduce the amount of liquids.
 
 ### Ingredients
-* 300 flour - I have used 200 all-purpose and 100 semolina
-* 350 quark
-* 200 sugar
-* 200 butter
+* 300 g flour - I have used 200 all-purpose and 100 semolina
+* 350 g quark
+* 200 g sugar
+* 200 g butter
 * 4 eggs
 * pinch of salt
 * teaspoon of baking powder
 * spoon of lemon juice and some lemon zest
 * teaspoon of vanilla extract
 * half cup of raisins
-* 2-3 spoons of cocoa
+* 2-3 spoons of cocoa for marbling
 
 ### Before you start
 * If you want raisins in your recipe, soak them in warm water before you start to bake or in some nice liquor overnight. They need to regain some of their moisture.
