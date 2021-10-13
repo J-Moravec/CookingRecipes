@@ -21,7 +21,7 @@ You will notice that the recipe is quite similar to the [steamed dumplings](./st
 * 1 spoon of sugar
 * 10-20 g of yeast
 * 1 egg
-* 1 teaspoon of sugar
+* 1 teaspoon of salt
 
 ### Directions
 
