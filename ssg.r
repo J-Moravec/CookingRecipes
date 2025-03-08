@@ -1,4 +1,5 @@
-library("servr")
+#!/bin/env Rscript
+library("xfun", warn.conflicts = FALSE)
 library("argparser", quiet=TRUE)
 library("whisker")
 library("rmarkdown")
@@ -18,7 +19,7 @@ args_parser = function(){
         )
 
     parser = add_argument(
-        parser, "--serve", flag=TRUE,
+        parser, "--local", flag=TRUE,
         help="Build site to be viewed locally"
         )
 
@@ -33,6 +34,80 @@ args_parser = function(){
         )
 
     return(parser)
+    }
+
+# Use internal http server to view site locally
+# see: https://github.com/J-Moravec/serve
+serve = function(dir = ".", port = 0){
+    httpd_static = function(path, query, ...){
+        path = sub(pattern = "^/", replace = "", path)
+
+        if(path == "") path = "index.html"
+        if(file.exists(path) && file_test("-f", path)){
+            list(file = path, "content-type" = xfun::mime_type(path))
+            } else {
+            list(payload = error404, "statu code" = 404)
+            }
+        }
+
+    error404 = paste0(
+        "<!DOCTYPE html>",
+        "<html lang=\"en\">",
+        "<head>",
+        "    <meta charset=\"UTF-8\">",
+        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+        "    <title>Resources not found</title>",
+        "</head>",
+        "<body>",
+        "    <div class=\"main\">",
+        "        <h1>404</h1>",
+        "        <div>The page you are looking for is not found</div>",
+        "        <a href=\"/\">Back to home</a>",
+        "    </div>",
+        "</body>",
+        "</html>",
+        collapse = "\n"
+        )
+
+    assign_in_namespace = function(x, f, envir){
+        old = get(x, envir = envir)
+        unlockBinding(x, envir)
+        assign(x, f, envir = envir)
+        lockBinding(x, envir)
+        invisible(old)
+        }
+
+    stop_server = function(){
+        port = tools:::httpdPort()
+        if(port > 0)
+            tools::startDynamicHelp(FALSE)
+        }
+
+    dir = normalizePath(dir)
+    if(port) options(help.ports = port)
+
+    old_httpd = assign_in_namespace("httpd", httpd_static, getNamespace("tools"))
+    on.exit(
+        assign_in_namespace("httpd", old_httpd, getNamespace("tools")),
+        add = TRUE
+        )
+
+    old_wd = getwd()
+    setwd(dir)
+    on.exit(setwd(old_wd), add = TRUE)
+
+    stop_server()
+    on.exit(stop_server, add = TRUE)
+
+    port = suppressMessages(tools:::startDynamicHelp(NA))
+    url = paste0("http://127.0.0.1:", port)
+    message("Serving directory: ", dir)
+    message(paste("Served at:", url))
+
+    browser = getOption("browser")
+    browseURL(url, browser = browser)
+
+    Sys.sleep(Inf)
     }
 
 
@@ -278,7 +353,7 @@ make_site = function(data){
     }
 
 
-serve = function(){
+build_local = function(){
     data = yaml::read_yaml("config.yml")
     data[["site_baseurl"]] = ""
 
@@ -305,9 +380,9 @@ if(!interactive()){
     args = parse_args(parser)
 
     if(args$view){
-        servr::httd()
-        } else if(args$serve){
         serve()
+        } else if(args$local){
+        build_local()
         } else if(args$build){
         build()
         } else if(args$clean){
