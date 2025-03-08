@@ -21,4 +21,4 @@ type: baking
 * slowly add beaten eggs and continue mixing
 * mix in cocoa paste
 * stop mixing
-* gradually fold it flour -- take spatula and make these circular movements like you are trying to draw circles from bottom of your bowl to top
+* gradually fold in flour -- take spatula and make these circular movements like you are trying to draw circles from bottom of your bowl to top

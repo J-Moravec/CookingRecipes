@@ -3,6 +3,8 @@ title: Spinach puree
 type: cooking
 ---
 
+## Puree
+
 ### Ingredients
 
 * 1 kg spinach (frozen)
@@ -13,3 +15,8 @@ type: cooking
 * water as needed
 * 4 spoons of flour for thickennig
 * (optional) 1-2 eggs
+
+## Non-puree
+* prepare béchamel from butter, flour and milk (alternatively, add an onion and garlic)
+* put spinach in and stew for 20 minutes until soft
+* salt, pepper, garlic
