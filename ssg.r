@@ -5,7 +5,6 @@ library("whisker")
 library("rmarkdown")
 library("yaml")
 library("htmltools")
-library("magrittr")
 
 args_parser = function(){
     parser = arg_parser(
@@ -147,7 +146,7 @@ render_template = function(template, data){
 get_sidebar = function(data){
     template = get_template("sidebar.html")
     metadata = get_metadata(data)
-    types = metadata$type %>% unique %>% sort %>% capitalize
+    types = metadata$type |> unique() |> sort() |> capitalize()
     type_links = lapply(
         types,
         function(type){
@@ -220,7 +219,7 @@ get_metadata = function(data){
 
 # tranpose list of lists according to found elements, but preserve unknown data:
 transpose = function(list){
-    columns = unlist(list) %>% names %>% unique
+    columns = unlist(list) |> names() |> unique()
     transposed = lapply(columns, get_column, list)
     names(transposed) = columns
     transposed
@@ -262,10 +261,10 @@ home_page = function(data){
 
     # create links for latest:
     latest_links = list()
-    latest_pages = data[["latest_pages"]] %>% as.numeric
+    latest_pages = data[["latest_pages"]] |> as.numeric()
     if(latest_pages > 0){
         latest_metadata = metadata[
-            metadata[["date"]] %>% order(., decreasing=TRUE),
+            metadata[["date"]] |> order(decreasing=TRUE),
             ]
         latest_pages = min(latest_pages, nrow(latest_metadata))
         latest_metadata = latest_metadata[1:latest_pages, ]
@@ -279,7 +278,7 @@ home_page = function(data){
         }
 
     # create links for each type:
-    types = metadata[["type"]] %>% unique %>% sort
+    types = metadata[["type"]] |> unique() |> sort()
     type_links = list()
 
     for(type in types){
