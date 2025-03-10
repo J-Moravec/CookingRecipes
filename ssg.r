@@ -8,9 +8,10 @@ library("htmltools")
 
 # Use internal http server to view site locally
 # see: https://github.com/J-Moravec/serve
-serve = function(dir = ".", port = 0){
+serve = function(dir = ".", port = 0, baseurl = NULL){
     httpd_static = function(path, query, ...){
-        path = sub(pattern = "^/", replace = "", path)
+        pattern = if(is.null(baseurl)) "^/" else sprintf("^/(%s/)?", baseurl)
+        path = sub(pattern = pattern, replace = "", path)
 
         if(path == "") path = "index.html"
         if(file.exists(path) && file_test("-f", path)){
@@ -323,19 +324,18 @@ make_site = function(data){
     }
 
 
-build_local = function(){
-    data = yaml::read_yaml("config.yml")
-    data[["site_baseurl"]] = ""
-
-    make_site(data)
+view = function(){
+    baseurl = yaml::read_yaml("config.yml")[["site_baseurl"]]
+    baseurl = path = sub(pattern = "^/", replace = "", baseurl)
+    serve(baseurl = baseurl)
     }
 
 
 build = function(){
     data = yaml::read_yaml("config.yml")
-
     make_site(data)
     }
+
 
 clean = function(){
     data = yaml::read_yaml("config.yml")
@@ -374,8 +374,7 @@ usage = function(){
 "Commands:\n",
 "Both short and long options are allowed.\n",
 "  v  view   start a local html server and serve the current directory\n",
-"  l  local  build site to be viewed locally\n",
-"  b  build  build site with site_baseurl for web browsing\n",
+"  b  build  build site\n",
 "  c  clean  clean generated files\n\n"
         ))
     }
@@ -389,8 +388,7 @@ if(sys.nframe() == 0){
         }
 
     switch(args[1],
-        "v" =, "view" = serve(),
-        "l" =, "local" = build_local(),
+        "v" =, "view" = view(),
         "b" =, "build" = build(),
         "c" =, "clean" = clean(),
         {usage(); stop("Unknown argument \"", args[1], "\"", call. = FALSE)}
