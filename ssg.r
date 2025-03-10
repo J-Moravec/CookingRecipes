@@ -1,39 +1,10 @@
 #!/bin/env Rscript
 library("xfun", warn.conflicts = FALSE)
-library("argparser", quiet=TRUE)
 library("whisker")
 library("rmarkdown")
 library("yaml")
 library("htmltools")
 
-args_parser = function(){
-    parser = arg_parser(
-        paste0(
-            "The static site generator for the CookingRecipe project."
-            )
-        )
-
-    parser = add_argument(
-        parser, "--view", flag=TRUE, help="Start a local html server."
-        )
-
-    parser = add_argument(
-        parser, "--local", flag=TRUE,
-        help="Build site to be viewed locally"
-        )
-
-    parser = add_argument(
-        parser, "--build", flag=TRUE,
-        help="Build site with site_baseurl for web browsing."
-        )
-
-    parser = add_argument(
-        parser, "--clean", flag=TRUE,
-        help="Clean generated files."
-        )
-
-    return(parser)
-    }
 
 # Use internal http server to view site locally
 # see: https://github.com/J-Moravec/serve
@@ -215,7 +186,7 @@ get_metadata = function(data){
         paste0(pages_name, ".html")
         )
     metadata
-    }    
+    }
 
 # tranpose list of lists according to found elements, but preserve unknown data:
 transpose = function(list){
@@ -292,7 +263,7 @@ home_page = function(data){
             )
         }
     type_links = tagList(type_links)
-    
+
     links = tagList(latest_links, type_links)
     as.character(links)
     }
@@ -362,7 +333,7 @@ build_local = function(){
 
 build = function(){
     data = yaml::read_yaml("config.yml")
-    
+
     make_site(data)
     }
 
@@ -374,19 +345,54 @@ clean = function(){
     }
 
 
-if(!interactive()){
-    parser = args_parser()
-    args = parse_args(parser)
+#' Get a name of a script
+#'
+#' Get the name of the script's filename when run through Rscript
+#'
+#' For instance, for a script `script.r` in the `folder` folder,
+#' it could be run as `Rscript folder/script.r`. In that case,
+#' the `get_scriptname` returns the `script.r`.
+get_scriptname = function(){
+    args = commandArgs(FALSE)
 
-    if(args$view){
-        serve()
-        } else if(args$local){
-        build_local()
-        } else if(args$build){
-        build()
-        } else if(args$clean){
-        clean()
-        } else {
-        print(parser)
+    file_arg = grep("--file=", args, fixed=TRUE, value=TRUE)[1]
+
+    # not run throught script
+    if(length(file_arg) == 0)
+        return(NULL)
+
+    sub("^--file=", "", file_arg)
+    }
+
+
+usage = function(){
+    prog = get_scriptname()
+    blnk = strrep(" ", nchar(prog))
+    cat(paste0(
+"Usage: ", prog, " command ID\n",
+"A simple static site generator for the CookingRecipes project\n\n",
+"Commands:\n",
+"Both short and long options are allowed.\n",
+"  v  view   start a local html server and serve the current directory\n",
+"  l  local  build site to be viewed locally\n",
+"  b  build  build site with site_baseurl for web browsing\n",
+"  c  clean  clean generated files\n\n"
+        ))
+    }
+
+
+if(sys.nframe() == 0){
+    args = commandArgs(TRUE)
+    if(length(args) < 1){
+        usage()
+        stop("Not enough arguments", call. = FALSE)
         }
+
+    switch(args[1],
+        "v" =, "view" = serve(),
+        "l" =, "local" = build_local(),
+        "b" =, "build" = build(),
+        "c" =, "clean" = clean(),
+        {usage(); stop("Unknown argument \"", args[1], "\"", call. = FALSE)}
+        )
     }
