@@ -100,7 +100,6 @@ render_md = function(file){
 
 # get functions #
 get_template = function(template){
-    path = "layouts"
     path = file.path("layouts", template)
     template = readLines(path)
     template
@@ -109,7 +108,7 @@ get_template = function(template){
 
 # rendering functions #
 render_template = function(template, data){
-    page = whisker.render(template, data)
+    page = whisker::whisker.render(template, data)
     page
     }
 
@@ -122,14 +121,14 @@ get_sidebar = function(data){
     type_links = lapply(
         types,
         function(type){
-            a(
-                class="sidebar-nav-item",
-                href=paste0(data["site_baseurl"], "/#", type), 
+            htmltools::a(
+                class = "sidebar-nav-item",
+                href = paste0(data["site_baseurl"], "/#", type), 
                 type
                 )
             }
         )
-    type_links = tagList(type_links)
+    type_links = htmltools::tagList(type_links)
     data[["content"]] = as.character(type_links)
     template = render_template(template, data)
     template
@@ -216,8 +215,13 @@ fix_missing_date = function(dates, pages_path){
 
 # make links from metadata
 make_links = function(metadata){
-    links = apply(metadata, 1, function(x){ tagList(a(href=x["link"], x["title"]), br())})
-    links = tagList(links)
+    links = apply(
+        metadata,
+        1,
+        function(x)
+            htmltools::tagList(htmltools::a(href = x["link"], x["title"]), htmltools::br())
+        )
+    links = htmltools::tagList(links)
     links
     }
 
@@ -255,17 +259,17 @@ home_page = function(data){
 
     for(type in types){
         type_metadata = metadata[metadata[["type"]] == type,]
-        type_links[[type]] = tagList(
-            div(
-                id=capitalize(type),
-                h3( capitalize(type) ),
+        type_links[[type]] = htmltools::tagList(
+            htmltools::div(
+                id = capitalize(type),
+                htmltools::h3( capitalize(type) ),
                 make_links(type_metadata)
                 )
             )
         }
-    type_links = tagList(type_links)
+    type_links = htmltools::tagList(type_links)
 
-    links = tagList(latest_links, type_links)
+    links = htmltools::tagList(latest_links, type_links)
     as.character(links)
     }
 
