@@ -3,8 +3,36 @@ library("xfun", warn.conflicts = FALSE)
 library("whisker")
 library("rmarkdown")
 library("yaml")
-library("htmltools")
 
+tag = function(tag, content, ...){
+    dots = list(...)
+    if(length(dots) != 0){
+        attributes = paste0(" ", paste0(names(dots), "=\"", dots, "\"", collapse = " "))
+        } else {
+        attributes = character()
+        }
+
+    if(missing(content)){
+        paste0("<", tag, attributes, "/>")
+        } else {
+        paste0("<", tag, attributes, ">", content, "</", tag, ">")
+        }
+    }
+
+
+tags = function(x, ..., collapse = "\n"){
+    .mapply(match.fun(tag), c("tag" = x, list(...)), NULL) |>
+        unlist() |>
+        paste0(collapse = collapse)
+    }
+
+
+div = function(content, ...){
+    if(missing(content))
+        stop("Div cannot be null tag!")
+
+    tag("div", paste0(c("", content, ""), collapse = "\n"), ...)
+    }
 
 # Use internal http server to view site locally
 # see: https://github.com/J-Moravec/serve
@@ -118,18 +146,12 @@ get_sidebar = function(data){
     template = get_template("sidebar.html")
     metadata = get_metadata(data)
     types = metadata$type |> unique() |> sort() |> capitalize()
-    type_links = lapply(
-        types,
-        function(type){
-            htmltools::a(
-                class = "sidebar-nav-item",
-                href = paste0(data["site_baseurl"], "/#", type), 
-                type
-                )
-            }
+    data[["content"]] = tags(
+        "a",
+        content = types,
+        class = "sidebar-nav-item",
+        href = paste0(data["site_baseurl"], "/#", types)
         )
-    type_links = htmltools::tagList(type_links)
-    data[["content"]] = as.character(type_links)
     template = render_template(template, data)
     template
     }
@@ -215,13 +237,12 @@ fix_missing_date = function(dates, pages_path){
 
 # make links from metadata
 make_links = function(metadata){
-    links = apply(
-        metadata,
-        1,
-        function(x)
-            htmltools::tagList(htmltools::a(href = x["link"], x["title"]), htmltools::br())
+    links = tags(
+        "a",
+        content = metadata[["title"]],
+        href = metadata[["link"]],
+        collapse = paste0("\n", tag("br"), "\n")
         )
-    links = htmltools::tagList(links)
     links
     }
 
@@ -244,10 +265,10 @@ home_page = function(data){
             ]
         latest_pages = min(latest_pages, nrow(latest_metadata))
         latest_metadata = latest_metadata[1:latest_pages, ]
-        latest_links = tagList(
-            div(
-                id="Latest",
-                h3("Latest"),
+        latest_links = div(
+            id = "Latest",
+            content = c(
+                tag("h3", "Latest"),
                 make_links(latest_metadata)
                 )
             )
@@ -259,18 +280,16 @@ home_page = function(data){
 
     for(type in types){
         type_metadata = metadata[metadata[["type"]] == type,]
-        type_links[[type]] = htmltools::tagList(
-            htmltools::div(
-                id = capitalize(type),
-                htmltools::h3( capitalize(type) ),
+        type_links[[type]] = div(
+            id = capitalize(type),
+            content = c(
+                tag("h3", capitalize(type)),
                 make_links(type_metadata)
                 )
             )
         }
-    type_links = htmltools::tagList(type_links)
-
-    links = htmltools::tagList(latest_links, type_links)
-    as.character(links)
+    links = paste(c(latest_links, type_links), collapse = "\n")
+    links
     }
 
 
