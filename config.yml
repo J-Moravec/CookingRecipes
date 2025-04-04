@@ -1,11 +1,10 @@
---- # config
 # Setting:
-pages_inputdir : "_recipes"
-pages_outputdir : "recipes"
-latest_pages : 5
-site_baseurl : "/CookingRecipes"
+pages_inputdir: "_recipes"
+pages_outputdir: "recipes"
+latest_pages: 5
+site_baseurl: "/CookingRecipes"
 
 # Tags:
-site_title : CookingRecipes
-site_tagline : ""
-site_description : Not just Czech home-cooking!
+site_title: CookingRecipes
+site_tagline: ""
+site_description: Not just Czech home-cooking!

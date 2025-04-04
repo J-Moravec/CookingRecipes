@@ -2,7 +2,6 @@
 library("xfun", warn.conflicts = FALSE)
 library("whisker")
 library("rmarkdown")
-library("yaml")
 
 tag = function(tag, content, ...){
     dots = list(...)
@@ -33,6 +32,12 @@ div = function(content, ...){
 
     tag("div", paste0(c("", content, ""), collapse = "\n"), ...)
     }
+
+
+yaml_front_matter = function(x){
+    xfun::yaml_body(xfun::read_utf8(x), use_yaml = FALSE)$yaml
+    }
+
 
 # Use internal http server to view site locally
 # see: https://github.com/J-Moravec/serve
@@ -170,7 +175,7 @@ get_head = function(data){
 # and should be already contained in data
 # missing reading metadata
 render_md_page = function(file, template, data){
-    metadata = rmarkdown::yaml_front_matter(file)
+    metadata = yaml_front_matter(file)
     content = render_md(file)
     data[["page_title"]] = metadata[["title"]]
     data[["content"]] = content
@@ -196,7 +201,7 @@ get_metadata = function(data){
     pages = dir(pages_inputdir, pattern="*.md")
     pages_path = file.path(pages_inputdir, pages)
     pages_name = tools::file_path_sans_ext(pages)
-    metadata = lapply(pages_path, rmarkdown::yaml_front_matter)
+    metadata = lapply(pages_path, yaml_front_matter)
     metadata = transpose(metadata)
     metadata = as.data.frame(metadata, stringsAsFactors=FALSE)
     metadata["path"] = pages_path
@@ -361,7 +366,7 @@ build = function(){
 
 
 clean = function(){
-    data = yaml::read_yaml("config.yml")
+    data = xfun::taml_file("config.yml")
     pages_outputdir = data[["pages_outputdir"]]
     unlink(pages_outputdir, recursive=TRUE)
     invisible(file.remove("index.html"))
