@@ -1,7 +1,8 @@
 #!/bin/env Rscript
+library("tools")
 library("xfun", warn.conflicts = FALSE)
+library("litedown")
 library("whisker")
-library("rmarkdown")
 
 tag = function(tag, content, ...){
     dots = list(...)
@@ -117,22 +118,6 @@ serve = function(dir = ".", port = 0, baseurl = NULL){
     }
 
 
-# render the markdown document into an incomplete HTML page
-render_md = function(file){
-    path = rmarkdown::render(
-        input = file,
-        output_format = html_fragment(),
-        runtime = "static",
-        knit_meta = FALSE,
-        quiet = TRUE
-        )
-    rendered = readLines(path)
-    rendered = paste0(rendered, collapse="\n")
-    file.remove(path)
-    rendered
-    }
-
-
 # get functions #
 get_template = function(template){
     path = file.path("layouts", template)
@@ -176,9 +161,10 @@ get_head = function(data){
 # header and sidebar are common to all pages
 # and should be already contained in data
 # missing reading metadata
-render_md_page = function(file, template, data){
-    metadata = yaml_front_matter(file)
-    content = render_md(file)
+render_md = function(file, template, data){
+    page = yaml_body(xfun::read_utf8(file), use_yaml = FALSE)
+    metadata = page[["yaml"]]
+    content = litedown::mark(page[["body"]], output = NA, options = list(embed_resources = FALSE))
     data[["page_title"]] = metadata[["title"]]
     data[["content"]] = content
     data[["page_name"]] = tools::file_path_sans_ext(file)
@@ -323,7 +309,7 @@ render_pages = function(template, data){
             pages_outputdir,
             page_name
             )
-        render_md_page(
+        render_md(
             file.path(pages_inputdir, page),
             template,
             data
@@ -345,13 +331,12 @@ make_site = function(data){
     head = get_head(data)
     sidebar = get_sidebar(data)
     page_template = get_template("page.html")
-    recipe_template = get_template("recipe.html")
 
     data[["head"]] = head
     data[["sidebar"]] = sidebar
 
     render_home_page(page_template, data)
-    render_pages(recipe_template, data)
+    render_pages(page_template, data)
     }
 
 
