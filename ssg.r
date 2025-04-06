@@ -6,36 +6,38 @@ library("rmarkdown")
 tag = function(tag, content, ...){
     dots = list(...)
     if(length(dots) != 0){
-        attributes = paste0(" ", paste0(names(dots), "=\"", dots, "\"", collapse = " "))
+        attributes = paste0(" ", names(dots), "=\"", dots, "\"", collapse = "")
         } else {
         attributes = character()
         }
 
-    if(missing(content)){
-        paste0("<", tag, attributes, "/>")
-        } else {
-        paste0("<", tag, attributes, ">", content, "</", tag, ">")
-        }
-    }
-
-
-tags = function(x, ..., collapse = "\n"){
-    .mapply(match.fun(tag), c("tag" = x, list(...)), NULL) |>
-        unlist() |>
-        paste0(collapse = collapse)
-    }
-
-
-div = function(content, ...){
     if(missing(content))
-        stop("Div cannot be null tag!")
+        return(paste0("<", tag, attributes, "/>"))
 
-    tag("div", paste0(c("", content, ""), collapse = "\n"), ...)
+    if(length(content) == 1)
+        return(paste0("<", tag, attributes, ">", content, "</", tag, ">"))
+
+    c(
+        paste0("<", tag, attributes, ">"),
+        content,
+        paste0("</", tag, ">")
+        )
+    }
+
+
+tags = function(x, ...){
+    .mapply(match.fun(tag), c("tag" = x, list(...)), NULL) |>
+        unlist()
     }
 
 
 yaml_front_matter = function(x){
     xfun::yaml_body(xfun::read_utf8(x), use_yaml = FALSE)$yaml
+    }
+
+
+interleave = function(...){
+    c(do.call(rbind, list(...)))
     }
 
 
@@ -50,7 +52,7 @@ serve = function(dir = ".", port = 0, baseurl = NULL){
         if(file.exists(path) && file_test("-f", path)){
             list(file = path, "content-type" = xfun::mime_type(path))
             } else {
-            list(payload = error404, "statu code" = 404)
+            list(payload = error404, "status code" = 404)
             }
         }
 
@@ -156,7 +158,7 @@ get_sidebar = function(data){
         content = types,
         class = "sidebar-nav-item",
         href = paste0(data["site_baseurl"], "/#", types)
-        )
+        ) |> paste0(collapse = "\n")
     template = render_template(template, data)
     template
     }
@@ -245,10 +247,9 @@ make_links = function(metadata){
     links = tags(
         "a",
         content = metadata[["title"]],
-        href = metadata[["link"]],
-        collapse = paste0("\n", tag("br"), "\n")
+        href = metadata[["link"]]
         )
-    links
+    interleave(links, tag("br")) |> head(-1)
     }
 
 
@@ -270,7 +271,8 @@ home_page = function(data){
             ]
         latest_pages = min(latest_pages, nrow(latest_metadata))
         latest_metadata = latest_metadata[1:latest_pages, ]
-        latest_links = div(
+        latest_links = tag(
+            "div",
             id = "Latest",
             content = c(
                 tag("h3", "Latest"),
@@ -285,7 +287,8 @@ home_page = function(data){
 
     for(type in types){
         type_metadata = metadata[metadata[["type"]] == type,]
-        type_links[[type]] = div(
+        type_links[[type]] = tag(
+            "div",
             id = capitalize(type),
             content = c(
                 tag("h3", capitalize(type)),
@@ -293,7 +296,7 @@ home_page = function(data){
                 )
             )
         }
-    links = paste(c(latest_links, type_links), collapse = "\n")
+    links = paste(c(latest_links, unlist(type_links)), collapse = "\n")
     links
     }
 
